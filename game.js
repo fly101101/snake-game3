@@ -206,27 +206,37 @@ drawGame();
 
 // 在游戏中发起支付
 function startPayment(amount) {
-    const paymentData = {
+    // 构建支付表单数据
+    const data = {
+        pid: '1033',  // 你的商户ID
+        type: 'alipay',  // 支付方式
+        out_trade_no: new Date().getTime() + Math.random().toString(36).substr(2, 6),
+        name: '游戏充值',
         money: amount,
-        name: "游戏充值",
-        // 生成订单号
-        out_trade_no: new Date().getTime() + Math.random().toString(36).substr(2, 6)
+        notify_url: 'https://9401.cn/notify_url.php', // 使用易支付提供的默认回调地址
+        return_url: 'https://fly101101.github.io/snake-game3/' // 你的游戏地址
     };
+    
+    // 生成支付链接
+    const payUrl = 'https://9401.cn/submit.php?' + new URLSearchParams(data).toString();
+    
+    // 跳转到支付页面
+    window.location.href = payUrl;
+}
 
-    // 调用支付服务器API
-    fetch('https://你的支付服务器域名/pay', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(paymentData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        // 跳转到支付页面
-        window.location.href = data.payUrl;
-    })
-    .catch(error => {
-        console.error('支付发起失败:', error);
-    });
-} 
+// 添加支付成功的处理函数
+function handlePaymentSuccess() {
+    // 检查URL参数是否包含支付成功的标识
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('trade_status') === 'TRADE_SUCCESS') {
+        lives++; // 增加一条生命
+        livesElement.textContent = '生命：' + lives;
+        // 清除URL参数
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+}
+
+// 在页面加载时检查支付状态
+window.onload = function() {
+    handlePaymentSuccess();
+}; 

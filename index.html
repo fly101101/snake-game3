@@ -30,22 +30,12 @@
         <div id="lives">生命：3</div>
         <canvas id="gameCanvas" width="400" height="400"></canvas>
     </div>
-    <div id="payment-modal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.3);">
-        <h3>购买生命</h3>
-        <div style="margin: 15px 0;">
-            <label>选择数量：</label>
-            <input type="number" id="life-quantity" min="1" max="100" value="1">
-            <p>总价：¥<span id="total-price">0.01</span></p>
-        </div>
-        <button onclick="confirmPurchase()">确认购买</button>
-        <button onclick="closePaymentModal()">取消</button>
-    </div>
-    <div id="game-over" style="display: none;">
+    <div id="game-over" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.3); text-align: center;">
         <h2>游戏结束</h2>
-        <button id="restart-btn">重新开始</button>
-        <button id="purchase-life-btn">购买一次生命 (¥0.01)</button>
+        <p>最终得分：<span id="final-score">0</span></p>
+        <button onclick="startPayment(0.01)">购买一条生命 (￥0.01)</button>
+        <button onclick="continueGame()">重新开始</button>
     </div>
-    <button onclick="startPayment(100)">充值100元</button>
     <script src="game.js"></script>
 </body>
 </html> 
