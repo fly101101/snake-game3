@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 drawGame();
 
-// 在游戏中发起支付
+// 在文件末尾添加支付相关的函数
 function startPayment(amount) {
     // 构建支付表单数据
     const data = {
@@ -213,8 +213,8 @@ function startPayment(amount) {
         out_trade_no: new Date().getTime() + Math.random().toString(36).substr(2, 6),
         name: '游戏充值',
         money: amount,
-        notify_url: 'https://9401.cn/notify_url.php', // 使用易支付提供的默认回调地址
-        return_url: 'https://fly101101.github.io/snake-game3/' // 你的游戏地址
+        notify_url: 'https://9401.cn/notify_url.php',
+        return_url: 'https://fly101101.github.io/snake-game3/'
     };
     
     // 生成支付链接
@@ -226,7 +226,6 @@ function startPayment(amount) {
 
 // 添加支付成功的处理函数
 function handlePaymentSuccess() {
-    // 检查URL参数是否包含支付成功的标识
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('trade_status') === 'TRADE_SUCCESS') {
         lives++; // 增加一条生命
@@ -237,6 +236,4 @@ function handlePaymentSuccess() {
 }
 
 // 在页面加载时检查支付状态
-window.onload = function() {
-    handlePaymentSuccess();
-}; 
+window.addEventListener('load', handlePaymentSuccess); 
